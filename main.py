@@ -17,7 +17,7 @@ class VagaDB(Base):
     id = Column(Integer, primary_key=True)
     empresa = Column(String)
     cargo = Column(String)
-
+    status = Column(String, default="Candidatura enviada")
 
 Base.metadata.create_all(bind=engine)
 
@@ -25,6 +25,7 @@ Base.metadata.create_all(bind=engine)
 class Vaga(BaseModel):
     empresa: str
     cargo: str
+    status: str = "Candidatura enviada"
 
 
 @app.get("/")
@@ -39,7 +40,8 @@ def criar_vaga(vaga: Vaga):
 
     nova_vaga = VagaDB(
         empresa=vaga.empresa,
-        cargo=vaga.cargo
+        cargo=vaga.cargo,
+	status=vaga.status
     )
 
     db.add(nova_vaga)
